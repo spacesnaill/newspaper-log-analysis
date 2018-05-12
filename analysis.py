@@ -18,6 +18,13 @@ db_cursor = db_connection.cursor()
 
 # using the cursor, queries can be found below
 
-db_cursor.execute(""" """)
+db_cursor.execute(
+	"""articles.title, count(*) as num 
+	from log, articles 
+	where replace(lower(title),' ', '-') 
+	like 
+	ltrim(path, '/article/') 
+	group by title 
+	order by num desc; """)
 
 
