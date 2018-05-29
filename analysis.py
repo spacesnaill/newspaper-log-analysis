@@ -25,10 +25,9 @@ db_cursor.execute(
 	"""
 	SELECT articles.title, COUNT(*) as views
 	FROM log, articles 
-	WHERE articles.slug LIKE LTRIM(path, '/article/')
+	WHERE articles.slug = LTRIM(path, '/article/')
 	GROUP BY title 
-	ORDER BY views DESC
-	LIMIT 3;
+	ORDER BY views DESC;
 	""")
 
 # Most popular authors
@@ -36,3 +35,4 @@ db_cursor.execute(
 	"""
 	
 	""")
+
