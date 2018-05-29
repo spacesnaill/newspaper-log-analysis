@@ -31,55 +31,63 @@ try:
 		ORDER BY views DESC
 		LIMIT 3;
 		""")
+	rows = db_cursor.fetchall()
+	print('\n3 Most Popular Articles:\n')
+	for row in rows:
+		print("Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
 except:
 	print('Query Failed: Could not get the 3 most popular articles')
 
-rows = db_cursor.fetchall()
-print('\nResults:\n')
-for row in rows:
-	print("Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
+
 
 # Most popular authors
 # returns the author's name and the number of views each of their articles has
 # gets the author name from the author table by matching up the id in articles with the id in authors
 # counts the number of views each article has
-db_cursor.execute(
-	"""
-	SELECT authors.name, COUNT(*) as popularity
-	FROM articles, authors, log
-	WHERE articles.author = authors.id AND '/article/' || articles.slug = path
-	GROUP BY authors.name
-	ORDER BY popularity DESC;
-	""")
+try:
+	db_cursor.execute(
+		"""
+		SELECT authors.name, COUNT(*) as popularity
+		FROM articles, authors, log
+		WHERE articles.author = authors.id AND '/article/' || articles.slug = path
+		GROUP BY authors.name
+		ORDER BY popularity DESC;
+		""")
+	rows = db_cursor.fetchall()
+	print('\nMost Popular Authors:\n')
+	for row in rows:
+		print("Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
+except:
+	print('Query Failed: Could not get the most popular authors')
 
-rows = db_cursor.fetchall()
-print('\nResults:\n')
-for row in rows:
-	print("Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
+
 
 # On which days more than 1% of requests led to errors
 # Two subqueries form a table with 200 OK messages and 404 messages
 # This could be refactored to just look for the word OK and the word NOT FOUND or other error messages
 # After getting the number of both, we can then perform simple arithmatic to get the error percentage
-db_cursor.execute(
-	"""
-	SELECT TRIM(TO_CHAR(status200.day, 'Month')) || TO_CHAR(status200.day, ', DD YYYY'),
-	TRUNC(cast(status404.num as decimal) / (status200.num + status404.num), 2) * 100 as error_percentage
-	FROM
-	(SELECT status, COUNT(*) as num, date(time) as day
-	FROM log
-	WHERE status = '200 OK'
-	GROUP BY status, date(time)) status200,
-	(SELECT status, COUNT(*) as num, date(time) as day
-	FROM log
-	WHERE status = '404 NOT FOUND'
-	GROUP BY status, date(time)) status404
-	WHERE status200.day = status404.day AND
-	cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
-	;
-	""")
+try:
+	db_cursor.execute(
+		"""
+		SELECT TRIM(TO_CHAR(status200.day, 'Month')) || TO_CHAR(status200.day, ', DD YYYY') as long_date,
+		TRUNC(cast(status404.num as decimal) / (status200.num + status404.num), 2) * 100 as error_percentage
+		FROM
+		(SELECT status, COUNT(*) as num, date(time) as day
+		FROM log
+		WHERE status = '200 OK'
+		GROUP BY status, date(time)) status200,
+		(SELECT status, COUNT(*) as num, date(time) as day
+		FROM log
+		WHERE status = '404 NOT FOUND'
+		GROUP BY status, date(time)) status404
+		WHERE status200.day = status404.day AND
+		cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
+		ORDER BY long_date;
+		""")
 
-rows = db_cursor.fetchall()
-print('\nResults:\n')
-for row in rows:
-	print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
+	rows = db_cursor.fetchall()
+	print('\nDays in which more than 1% of Requests led to an error:\n')
+	for row in rows:
+		print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
+except:
+	print('Query Failed: Could not find on which days more than 1% of requests led to errors')
