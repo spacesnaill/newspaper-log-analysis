@@ -21,6 +21,6 @@ This is the basic setup for the program itself with the use of Vagrant. Installa
 6. Enter 'vagrant ssh' into the terminal to ssh into the virtual machine, everything after this point is intended to be performed in the Virtual Machine you just SSH'd into
 7. Enter 'cd /vagrant' into the terminal to change to the correct directory within the virtual machine where the python file is kept
 8. Enter 'psql -d news -f newsdata.sql' into the terminal, this will connect to the 'news' database and run the SQL commands in the newsdata.sql file
-9. Now that everything is setup, run the python file by typing 'python analysis.py' into the terminal. This program uses Python 3, so you may wish to type python3 instead of python to ensure the system is using Python 3.
+9. Now that everything is setup, run the python file by typing 'python analysis.py' into the terminal
 10. The output should appear in your terminal window
 11. When you wish to stop the virtual machine, simply close the Vagrant SSH terminal window and open a new terminal window in the directory you used 'Vagrant up' in and enter 'Vagrant halt' into the terminal
