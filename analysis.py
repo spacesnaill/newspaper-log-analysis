@@ -18,13 +18,21 @@ db_cursor = db_connection.cursor()
 
 # using the cursor, queries can be found below
 
+# 3 most popular articles
+# returns the title of the article and looks at the log table to see how many times
+# it was accessed, counting those times and also displaying that
 db_cursor.execute(
-	"""articles.title, count(*) as num 
-	from log, articles 
-	where replace(lower(title),' ', '-') 
-	like 
-	ltrim(path, '/article/') 
-	group by title 
-	order by num desc; """)
+	"""
+	SELECT articles.title, COUNT(*) as views
+	FROM log, articles 
+	WHERE articles.slug LIKE LTRIM(path, '/article/')
+	GROUP BY title 
+	ORDER BY views DESC
+	LIMIT 3;
+	""")
 
-
+# Most popular authors
+db_cursor.execute(
+	"""
+	
+	""")
