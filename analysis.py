@@ -44,3 +44,18 @@ db_cursor.execute(
 	ORDER BY popularity DESC;
 	""")
 
+# On which days more than 1% of requests led to errors
+db_cursor.execute(
+	"""
+	SELECT status200.status, status200.day, status404.status, status404.day
+	FROM
+	(SELECT status, COUNT(*) as num, date(time) as day
+	FROM log
+	WHERE status = '200 OK'
+	GROUP BY status, date(time)) status200,
+	(SELECT status, COUNT(*) as num, date(time) as day
+	FROM log
+	WHERE status = '404 NOT FOUND'
+	GROUP BY status, date(time)) status404
+	WHERE status200.day = status404.day;
+	""")
