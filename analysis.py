@@ -49,6 +49,11 @@ db_cursor.execute(
 	ORDER BY popularity DESC;
 	""")
 
+rows = db_cursor.fetchall()
+print('\nResults:\n')
+for row in rows:
+	print("Author: {} | Popularity: {}\n".format(row[0], row[1]))
+
 # On which days more than 1% of requests led to errors
 # Two subqueries form a table with 200 OK messages and 404 messages
 # This could be refactored to just look for the word OK and the word NOT FOUND or other error messages
