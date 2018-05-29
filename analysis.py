@@ -18,6 +18,10 @@ db_cursor = db_connection.cursor()
 
 # using the cursor, queries can be found below
 
+# open a file to write to
+file_name = 'query_output.txt'
+output_file = open(file_name, 'w')
+
 # 3 most popular articles
 # returns the title of the article and looks at the log table to see how many times
 # it was accessed, counting those times and also displaying that
@@ -32,10 +36,15 @@ try:
 		LIMIT 3;
 		""")
 	rows = db_cursor.fetchall()
-	print('\n3 Most Popular Articles:\n')
+
+	print('\nThree Most Popular Articles:\n')
+	output_file.write('\nThree Most Popular Articles:\n')
+
 	for row in rows:
+		output_file.write("Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
 		print("Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
 except:
+	output_file.write('Query Failed: Could not get the 3 most popular articles')
 	print('Query Failed: Could not get the 3 most popular articles')
 
 
@@ -54,10 +63,15 @@ try:
 		ORDER BY popularity DESC;
 		""")
 	rows = db_cursor.fetchall()
+
 	print('\nMost Popular Authors:\n')
+	output_file.write('\nMost Popular Authors:\n')
+
 	for row in rows:
+		output_file.write("Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
 		print("Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
 except:
+	output_file.write('Query Failed: Could not get the most popular authors')
 	print('Query Failed: Could not get the most popular authors')
 
 
@@ -84,10 +98,16 @@ try:
 		cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
 		ORDER BY long_date;
 		""")
-
 	rows = db_cursor.fetchall()
+
+	output_file.write('\nDays in which more than 1% of Requests led to an error:\n')
 	print('\nDays in which more than 1% of Requests led to an error:\n')
+
 	for row in rows:
+		output_file.write("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
 		print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
 except:
+	output_file.write('Query Failed: Could not find on which days more than 1% of requests led to errors')
 	print('Query Failed: Could not find on which days more than 1% of requests led to errors')
+
+output_file.close()
