@@ -75,3 +75,8 @@ db_cursor.execute(
 	cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
 	;
 	""")
+
+rows = db_cursor.fetchall()
+print('\nResults:\n')
+for row in rows:
+	print("Date: {} | Error Percentage: {}\n".format(row[0], row[1]))
