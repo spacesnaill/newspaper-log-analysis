@@ -1,3 +1,4 @@
+#!Python3
 import psycopg2
 import sys
 
