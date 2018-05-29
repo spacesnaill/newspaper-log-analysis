@@ -25,17 +25,21 @@ db_cursor.execute(
 	"""
 	SELECT articles.title, COUNT(*) as views
 	FROM log, articles 
-	WHERE articles.slug = LTRIM(path, '/article/')
+	WHERE '/article/' || articles.slug = path
 	GROUP BY title 
-	ORDER BY views DESC;
+	ORDER BY views DESC
+	LIMIT 3;
 	""")
 
 # Most popular authors
+# returns the author's name and the number of views each of their articles has
+# gets the author name from the author table by matching up the id in articles with the id in authors
+# counts the number of views each article has
 db_cursor.execute(
 	"""
 	SELECT authors.name, COUNT(*) as popularity
 	FROM articles, authors, log
-	WHERE articles.author = authors.id AND articles.slug LIKE LTRIM(path, '/article/')
+	WHERE articles.author = authors.id AND '/article/' || articles.slug = path
 	GROUP BY authors.name
 	ORDER BY popularity DESC;
 	""")
