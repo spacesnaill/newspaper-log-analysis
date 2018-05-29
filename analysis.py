@@ -31,6 +31,11 @@ db_cursor.execute(
 	LIMIT 3;
 	""")
 
+rows = db_cursor.fetchall()
+print('\nResults:\n')
+for row in rows:
+	print("Article: {} | Views: {}\n".format(row[0], row[1]))
+
 # Most popular authors
 # returns the author's name and the number of views each of their articles has
 # gets the author name from the author table by matching up the id in articles with the id in authors
