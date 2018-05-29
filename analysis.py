@@ -33,6 +33,10 @@ db_cursor.execute(
 # Most popular authors
 db_cursor.execute(
 	"""
-	
+	SELECT authors.name, COUNT(*) as popularity
+	FROM articles, authors, log
+	WHERE articles.author = authors.id AND articles.slug LIKE LTRIM(path, '/article/')
+	GROUP BY authors.name
+	ORDER BY popularity DESC;
 	""")
 
