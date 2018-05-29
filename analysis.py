@@ -34,7 +34,7 @@ db_cursor.execute(
 rows = db_cursor.fetchall()
 print('\nResults:\n')
 for row in rows:
-	print("Article: {} | Views: {}\n".format(row[0], row[1]))
+	print("Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
 
 # Most popular authors
 # returns the author's name and the number of views each of their articles has
@@ -52,7 +52,7 @@ db_cursor.execute(
 rows = db_cursor.fetchall()
 print('\nResults:\n')
 for row in rows:
-	print("Author: {} | Popularity: {}\n".format(row[0], row[1]))
+	print("Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
 
 # On which days more than 1% of requests led to errors
 # Two subqueries form a table with 200 OK messages and 404 messages
@@ -60,7 +60,7 @@ for row in rows:
 # After getting the number of both, we can then perform simple arithmatic to get the error percentage
 db_cursor.execute(
 	"""
-	SELECT TO_CHAR(status200.day, 'Month, DD YYYY'),
+	SELECT TRIM(TO_CHAR(status200.day, 'Month')) || TO_CHAR(status200.day, ', DD YYYY'),
 	TRUNC(cast(status404.num as decimal) / (status200.num + status404.num), 2) * 100 as error_percentage
 	FROM
 	(SELECT status, COUNT(*) as num, date(time) as day
@@ -79,4 +79,4 @@ db_cursor.execute(
 rows = db_cursor.fetchall()
 print('\nResults:\n')
 for row in rows:
-	print("Date: {} | Error Percentage: {}\n".format(row[0], row[1]))
+	print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
