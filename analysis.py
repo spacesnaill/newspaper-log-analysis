@@ -45,9 +45,13 @@ db_cursor.execute(
 	""")
 
 # On which days more than 1% of requests led to errors
+# Two subqueries form a table with 200 OK messages and 404 messages
+# This could be refactored to just look for the word OK and the word NOT FOUND or other error messages
+# After getting the number of both, we can then perform simple arithmatic to get the error percentage
 db_cursor.execute(
 	"""
-	SELECT status200.status, status200.day, status404.status, status404.day
+	SELECT TO_CHAR(status200.day, 'Month, DD YYYY'),
+	TRUNC(cast(status404.num as decimal) / (status200.num + status404.num), 2) * 100 as error_percentage
 	FROM
 	(SELECT status, COUNT(*) as num, date(time) as day
 	FROM log
@@ -57,5 +61,7 @@ db_cursor.execute(
 	FROM log
 	WHERE status = '404 NOT FOUND'
 	GROUP BY status, date(time)) status404
-	WHERE status200.day = status404.day;
+	WHERE status200.day = status404.day AND
+	cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
+	;
 	""")
