@@ -21,15 +21,18 @@ db_cursor = db_connection.cursor()
 # 3 most popular articles
 # returns the title of the article and looks at the log table to see how many times
 # it was accessed, counting those times and also displaying that
-db_cursor.execute(
-	"""
-	SELECT articles.title, COUNT(*) as views
-	FROM log, articles 
-	WHERE '/article/' || articles.slug = path
-	GROUP BY title 
-	ORDER BY views DESC
-	LIMIT 3;
-	""")
+try:
+	db_cursor.execute(
+		"""
+		SELECT articles.title, COUNT(*) as views
+		FROM log, articles 
+		WHERE '/article/' || articles.slug = path
+		GROUP BY title 
+		ORDER BY views DESC
+		LIMIT 3;
+		""")
+except:
+	print('Query Failed: Could not get the 3 most popular articles')
 
 rows = db_cursor.fetchall()
 print('\nResults:\n')
