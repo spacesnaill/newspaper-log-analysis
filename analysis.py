@@ -73,7 +73,7 @@ def three_most_popular_articles():
         print('Query Failed: Could not get the 3 most popular articles')
 
 
-def most_popular authors():
+def most_popular_authors():
     """
     Most popular authors
     returns the author's name and the number of views each of their articles has
@@ -156,5 +156,9 @@ def more_than_one_percent_errors():
         print(
             'Query Failed: ' + 
             'Could not find on which days more than 1% of requests led to errors')
+
+three_most_popular_articles()
+most_popular_authors()
+more_than_one_percent_errors()
 
 output_file.close()
