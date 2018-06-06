@@ -45,9 +45,7 @@ def three_most_popular_articles():
     it was accessed, counting those times and also displaying that
     prints the output to the console and to an output file
     """
-    try:
-        db_cursor.execute(
-            """
+    query =  """
             SELECT articles.title, views
             FROM articles
                 INNER JOIN 
@@ -57,7 +55,9 @@ def three_most_popular_articles():
             ON log.path =  '/article/' || articles.slug
             ORDER BY views DESC
             LIMIT 3;
-            """)
+            """
+    try:
+        db_cursor.execute(query)
         rows = db_cursor.fetchall()
 
         print('\nThree Most Popular Articles:\n')
@@ -82,16 +82,17 @@ def most_popular_authors():
     counts the number of views each article has
     prints output to console and to output file
     """
-    try:
-        db_cursor.execute(
-            """
+    query = """
             SELECT authors.name, COUNT(*) as popularity
             FROM articles, authors, log
             WHERE articles.author = authors.id 
             AND '/article/' || articles.slug = path
             GROUP BY authors.name
             ORDER BY popularity DESC;
-            """)
+            """ 
+
+    try:
+        db_cursor.execute(query)
         rows = db_cursor.fetchall()
 
         print('\nMost Popular Authors:\n')
@@ -118,8 +119,7 @@ def more_than_one_percent_errors():
     prints output to console and to output file
     """
     try:
-        db_cursor.execute(
-            """
+        query = """
             SELECT 
             TO_CHAR(status200.day, 'FMMonth DD, YYYY') as long_date,
             ROUND(
@@ -138,7 +138,8 @@ def more_than_one_percent_errors():
             WHERE status200.day = status404.day AND
             cast(status404.num as decimal) / (status200.num + status404.num) > 0.01
             ORDER BY long_date;
-            """)
+            """
+        db_cursor.execute(query)
         rows = db_cursor.fetchall()
 
         output_file.write(
