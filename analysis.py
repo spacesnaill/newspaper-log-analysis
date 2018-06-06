@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 import psycopg2
 import sys
 
@@ -31,10 +31,13 @@ output_file = open(file_name, 'w')
 try:
 	db_cursor.execute(
 		"""
-		SELECT articles.title, COUNT(*) as views
-		FROM log, articles 
-		WHERE '/article/' || articles.slug = path
-		GROUP BY title 
+		SELECT articles.title, views
+		FROM articles
+			INNER JOIN 
+			(SELECT path, count(path) as views
+			FROM log
+			GROUP BY log.path) as log 
+		ON log.path =  '/article/' || articles.slug
 		ORDER BY views DESC
 		LIMIT 3;
 		""")
@@ -48,7 +51,8 @@ try:
 			"Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
 		print(
 			"Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
-except:
+except (psycopg2.Error) as e:
+	print(e.pgerror)
 	output_file.write('Query Failed: Could not get the 3 most popular articles')
 	print('Query Failed: Could not get the 3 most popular articles')
 
