@@ -1,4 +1,4 @@
-#!Python3
+#!/usr/bin/env python3
 import psycopg2
 import sys
 
