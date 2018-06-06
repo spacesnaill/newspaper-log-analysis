@@ -6,21 +6,33 @@ import sys
 # check if we can connect to the databse
 # if we can connect, say as much
 # if we cannot connect, then say so and end the program
-try:
-    db_connection = psycopg2.connect("dbname=news")
-    print("Successfully connected to the database")
-except (Exception, psycopg2.DatabaseError) as error:
-    print("Not able to connect to database")
-    print(error)
-    sys.exit(1)
+
 
 # get the db's cursor so we can run queries on the db
 # IMPORTANT NOTE: THIS IS A PSYCOPG CURSOR, NOT A POSTGRESQL CURSOR
-db_cursor = db_connection.cursor()
 
-# using the cursor, queries can be found below
 
-# open a file to write to
+def db_connect(database_name):
+    """
+        check if we can connect to the databse
+        if we can connect, say as much
+        if we cannot connect, then say so and end the program
+        get the db's cursor so we can run queries on the db
+        IMPORTANT NOTE: THIS IS A PSYCOPG CURSOR, NOT A POSTGRESQL CURSOR
+        returns a tuple with the database connection and the cursor
+    """
+    try:
+        db_connection = psycopg2.connect("dbname={}".format(database_name))
+        print("Successfully connected to the database")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Not able to connect to database")
+        print(error)
+        sys.exit(1)
+
+    db_cursor = db_connection.cursor()
+    return (db_connection, db_cursor)
+
+db_cursor = db_connect("news")[1]
 file_name = 'query_output.txt'
 output_file = open(file_name, 'w')
 
