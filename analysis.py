@@ -47,10 +47,9 @@ try:
 	output_file.write('\nThree Most Popular Articles:\n')
 
 	for row in rows:
-		output_file.write(
-			"Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
-		print(
-			"Article: {} | Popularity: {} total views\n".format(row[0], row[1]))
+		output = "Article: {} | Popularity: {} total views\n".format(row[0], row[1])
+		output_file.write(output)
+		print(output)
 except (psycopg2.Error) as e:
 	print(e.pgerror)
 	output_file.write('Query Failed: Could not get the 3 most popular articles')
@@ -77,10 +76,9 @@ try:
 	output_file.write('\nMost Popular Authors:\n')
 
 	for row in rows:
-		output_file.write(
-			"Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
-		print(
-			"Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
+		output = "Author: {} | Popularity: {} total views\n".format(row[0], row[1])
+		output_file.write(output)
+		print(output)
 except (psycopg2.Error) as e:
 	print(e.pgerror)
 	output_file.write('Query Failed: Could not get the most popular authors')
@@ -122,9 +120,9 @@ try:
 	print('\nDays in which more than 1% of Requests led to an error:\n')
 
 	for row in rows:
-		output_file.write(
-			"Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
-		print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
+		output = "Date: {} | Error Percentage: {}%\n".format(row[0], row[1])
+		output_file.write(output)
+		print(output)
 except (psycopg2.Error) as e:
 	print(e.pgerror)
 	output_file.write(
