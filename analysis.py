@@ -81,7 +81,8 @@ try:
 			"Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
 		print(
 			"Author: {} | Popularity: {} total views\n".format(row[0], row[1]))
-except:
+except (psycopg2.Error) as e:
+	print(e.pgerror)
 	output_file.write('Query Failed: Could not get the most popular authors')
 	print('Query Failed: Could not get the most popular authors')
 
@@ -124,7 +125,8 @@ try:
 		output_file.write(
 			"Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
 		print("Date: {} | Error Percentage: {}%\n".format(row[0], row[1]))
-except:
+except (psycopg2.Error) as e:
+	print(e.pgerror)
 	output_file.write(
 		'Query Failed: ' + 
 		'Could not find on which days more than 1% of requests led to errors')
