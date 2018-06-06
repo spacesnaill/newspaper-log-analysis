@@ -93,9 +93,8 @@ except (psycopg2.Error) as e:
 try:
     db_cursor.execute(
         """
-        SELECT TRIM(
-        TO_CHAR(status200.day, 'Month')) || 
-        TO_CHAR(status200.day, ', DD YYYY') as long_date,
+        SELECT 
+        TO_CHAR(status200.day, 'FMMonth DD, YYYY') as long_date,
         TRUNC(
         cast(status404.num as decimal) / 
         (status200.num + status404.num), 2) * 100 

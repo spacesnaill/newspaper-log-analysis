@@ -11,4 +11,4 @@ Author: Anonymous Contributor | Popularity: 170098 total views
 Author: Markoff Chaney | Popularity: 84557 total views
 
 Days in which more than 1% of Requests led to an error:
-Date: July, 17 2016 | Error Percentage: 2.00%
+Date: July 17, 2016 | Error Percentage: 2.00%
