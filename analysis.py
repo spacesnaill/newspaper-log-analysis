@@ -115,6 +115,7 @@ def more_than_one_percent_errors():
     and the word NOT FOUND or other error messages
     After getting the number of both, 
     we can then perform simple arithmatic to get the error percentage
+    prints output to console and to output file
     """
     try:
         db_cursor.execute(
