@@ -1,6 +1,6 @@
 # Newspaper Analysis
 
-# Description
+## Description
 The point of this program is to run a few queries on the log database of a Newspaper website to gather useful information that can then be interpreted by a user. There are three queries of note here: the 3 most popular newspaper articles, the most popular newspaper authors, and on which days did over 1% of the requests made to the newspaper result in an error.
 
 The Technologies used in this program are as follows:
@@ -10,7 +10,7 @@ The Technologies used in this program are as follows:
 
 Vagrant was also used in this project, but it is not necessarily a requirement for the project to run as long as the news database is already set up on the system in question. With that said, it is **strongly** recommended you use Vagrant. Installation instructions for Vagrant can be found below if the use of Vagrant is desired.
 
-# Setup and Usage
+## Setup and Usage
 This is the basic setup for the program itself with the use of Vagrant. Installation of Python, PostgreSQL, and PsycoPG2 are all covered in their respective links above if this 
 
 1. Download and Install [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
