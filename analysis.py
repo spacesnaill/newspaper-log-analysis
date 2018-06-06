@@ -95,9 +95,9 @@ try:
         """
         SELECT 
         TO_CHAR(status200.day, 'FMMonth DD, YYYY') as long_date,
-        TRUNC(
+        ROUND(
         cast(status404.num as decimal) / 
-        (status200.num + status404.num), 2) * 100 
+        (status200.num + status404.num) * 100, 2) 
         as error_percentage
         FROM
         (SELECT status, COUNT(*) as num, date(time) as day
