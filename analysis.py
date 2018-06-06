@@ -9,8 +9,9 @@ import sys
 try:
 	db_connection = psycopg2.connect("dbname=news")
 	print("Successfully connected to the database")
-except:
+except (Exception, psycopg2.DatabaseError) as error:
 	print("Not able to connect to database")
+	print(error)
 	sys.exit(1)
 
 # get the db's cursor so we can run queries on the db
